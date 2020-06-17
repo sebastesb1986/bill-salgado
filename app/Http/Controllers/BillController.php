@@ -10,7 +10,7 @@ use App\Bill;
 
 class BillController extends Controller
 {
-    public function index ()
+    public function index (Request $request)
     {
 
         if ($request->ajax()) {
@@ -20,16 +20,18 @@ class BillController extends Controller
                         ->withTrashed();
                         return Datatables::of($bill)
             
+            ->addIndexColumn()
             // BOTONES DE EDICIÓN Y ELIMINACIÓN
             ->addColumn('action', function ($value) {
-                $button = '<button value="'.$value->id.'" class="btn btn-link btn-default" OnClick="Mostrar(this);" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></button>';
                 
+                $button = '<a href="' .route('bill.edit', $value->id).'" class="btn btn-warning btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>';
+
                 if($value->deleted_at != null){
-                    $button .= '<button value="'.$value->id.'" class="btn btn-link btn-info" OnClick="Restaurar(this);"><i class="fa fa-undo"></i></button>';
+                    $button .= '<button value="'.$value->id.'" class="btn btn-info btn-circle btn-sm" OnClick="Restore(this);"><i class="fa fa-undo"></i></button>';
 
                 }
                 else{
-                    $button .= '<button value="'.$value->id.'" class="btn btn-link btn-danger remove" OnClick="Eliminar(this);"><i class="fa fa-times"></i></button>';
+                    $button .= '<button value="'.$value->id.'" class="btn btn-danger btn-circle btn-sm remove" OnClick="Delete(this);"><i class="fa fa-times"></i></button>';
                 }
                 return $button;
             })
