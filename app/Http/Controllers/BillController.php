@@ -25,13 +25,17 @@ class BillController extends Controller
             // BOTONES DE EDICIÓN Y ELIMINACIÓN
             ->addColumn('action', function ($value) {
                 
-                $button = '<a href="' .route('bill.edit', $value->id).'" class="btn btn-warning btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>';
+                $button = '';
 
                 if($value->deleted_at != null){
+
                     $button .= '<button value="'.$value->id.'" class="btn btn-info btn-circle btn-sm" OnClick="Restore(this);"><i class="fa fa-undo"></i></button>';
 
                 }
                 else{
+
+                    $button = '<a href="' .route('bill.edit', $value->id).'" class="btn btn-warning btn-circle btn-sm"><i class="fas fa-pencil-alt"></i></a>';
+
                     $button .= '<button value="'.$value->id.'" class="btn btn-danger btn-circle btn-sm remove" OnClick="Delete(this);"><i class="fa fa-times"></i></button>';
                 }
                 return $button;
