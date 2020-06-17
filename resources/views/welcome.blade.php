@@ -5,8 +5,19 @@
     </head>
     <body>
         <div class="col-md-12 text-center">
-            <h1>Información Instructores</h1>
+            <h1>Importar facturas</h1>
             <div class="links  justify-content-between">
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 @if(Session::has('message'))
                 {{ Session::get("message") }}
                 @endif
