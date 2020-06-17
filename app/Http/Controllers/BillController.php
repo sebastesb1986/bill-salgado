@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Imports\BillsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Bill;
 
 class BillController extends Controller
@@ -10,7 +12,7 @@ class BillController extends Controller
     public function index ()
     {
 
-        return "HOLA MUNDO";
+        return view('welcome');
 
     }
 
@@ -24,7 +26,29 @@ class BillController extends Controller
     public function store (Request $request)
     {
 
-        // 
+        $archives = $request->file('excel');
+        $import = new BillsImport;
+
+        if ($request->hasFile('excel')) 
+        {
+            
+            foreach ($archives as $archive) 
+            {
+
+                Excel::queueImport($import, $archive);
+
+                $message = $archive->getClientOriginalName();
+
+                return redirect(route('sheet'))->with(['message' => $message ]);
+
+            }
+
+            
+
+
+        }
+        
+        return redirect(route('sheet'))->with(['message' => 'Vacio']);
 
     }
 

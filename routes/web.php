@@ -17,4 +17,5 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 }); */
 
-Route::get('/', 'BillController@index')->name('dashboard');
+Route::get('/', 'BillController@index')->name('sheet');
+Route::post('import', 'BillController@store')->name('import');
