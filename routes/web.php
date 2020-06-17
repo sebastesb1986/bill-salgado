@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::get('/', function () {
-    return view('welcome');
-}); */
+// Bill Routes
+Route::get('/', 'BillController@index')->name('bill.index');
+Route::get('bill/create', 'BillController@create')->name('bill.create');
+Route::post('bill', 'BillController@store')->name('bill.store');
+Route::get('bill/{bill}/edit', 'BillController@edit')->name('bill.edit');
+Route::put('bills{bill}', 'BillController@update')->name('bill.update');
+Route::get('bill/{id}/restore', 'BillController@restore')->name('bill.restore');
+Route::delete('bill/{id}/delete', 'BillController@destroy')->name('bill.destroy');
+// End Bill Routes
 
-Route::get('/', 'BillController@index')->name('sheet');
-Route::post('import', 'BillController@store')->name('import');
+
+// Import Routes
+Route::get('import', 'BillController@importView')->name('sheet');
+Route::post('import', 'BillController@import')->name('import');
+// End Import Routes

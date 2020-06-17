@@ -31,6 +31,7 @@ class CreateBillsTable extends Migration
             $table->decimal('tax', 4, 2);
             $table->decimal('total', 15, 2);
 
+            $table->softDeletes();
             $table->timestamps();
             
         });

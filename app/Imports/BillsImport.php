@@ -5,9 +5,10 @@ namespace App\Imports;
 use App\Bill;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class BillsImport implements ToModel, WithChunkReading, ShouldQueue
+class BillsImport implements ToModel, WithBatchInserts, WithChunkReading, ShouldQueue
 {
     public function model(array $row)
     {
@@ -29,9 +30,15 @@ class BillsImport implements ToModel, WithChunkReading, ShouldQueue
         ]);
     }
 
-    // Limitar inserción de datos hasta 16mil datos por archivo
-    public function chunkSize(): int
+    // Numero de datos por archivo a importar
+    public function batchSize(): int
     {
         return 16000;
+    }
+
+    // Cantidad de datos por archivo en cola
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 }
