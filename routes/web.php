@@ -18,7 +18,7 @@ Route::get('/', 'BillController@index')->name('bill.index');
 Route::get('bill/create', 'BillController@create')->name('bill.create');
 Route::post('bill', 'BillController@store')->name('bill.store');
 Route::get('bill/{bill}/edit', 'BillController@edit')->name('bill.edit');
-Route::put('bills{bill}', 'BillController@update')->name('bill.update');
+Route::put('bills/{bill}/update', 'BillController@update')->name('bill.update');
 Route::get('bill/{id}/restore', 'BillController@restore')->name('bill.restore');
 Route::delete('bill/{id}/delete', 'BillController@destroy')->name('bill.destroy');
 // End Bill Routes

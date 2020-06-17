@@ -28,7 +28,7 @@ class CreateBillsTable extends Migration
             $table->string('article', 150);
             $table->integer('quantity');
             $table->decimal('price', 11, 2);
-            $table->decimal('tax', 4, 2);
+            $table->decimal('tax', 4, 2)->nullable();
             $table->decimal('total', 15, 2);
 
             $table->softDeletes();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\FormBillRequest;
 use App\Imports\BillsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\Datatables\Datatables;
@@ -59,13 +60,18 @@ class BillController extends Controller
 
     }
 
-    public function store (Request $request)
+    public function store (FormBillRequest $request)
     {
+        // Calculo de valores para IVA, precio y total
+        $tax = $request->tax;
+        $vCal = ($request->price * $request->quantity);
+        $price =  ($vCal * $tax );
+        $total = ($vCal + $price);
 
         // Campos a ingresar para la tabla bills
         $data = [
 
-            'name' => $request->username,
+            'name' => $request->name,
             'lastname' => $request->lastname,
             'password' => $request->password,
             'document' => $request->document,
@@ -77,16 +83,16 @@ class BillController extends Controller
             'article' => $request->article,
             'quantity' => $request->quantity,
             'price' => $request->price,
-            'tax' => $request->tax,
-            'total' => $request->total,
+            'tax' => $tax,
+            'total' => $total,
 
         ];
 
         // insertar datos en la tabla bills
         $bill = Bill::create($data);
 
-        return redirect()->route('bills.index')
-                ->with('success', 'Factura(s) <strong>'.$bill->name.'</strong> Ingresado exitosamente!');
+        return redirect()->route('bill.index')
+                ->with('success', 'Factura(s) <strong>'.$bill->city.'</strong> Ingresado exitosamente!');
 
         
     }
@@ -94,7 +100,7 @@ class BillController extends Controller
     public function import (Request $request)
     {
         // Mensaje de notificación
-        $message = "Archivo(s) obligatorio(s)";
+        $message = "<strong> Archivo(s) obligatorio(s) </strong> "; 
 
         // Validar archivos
         $alert = [
@@ -126,13 +132,11 @@ class BillController extends Controller
 
             }
 
-            $message = "Importación exitosa!";
+            $message = "<strong> Sincronización exitosa! </strong> ";
 
         }
 
-        return redirect(route('sheet'))->with(['message' => $message]);
-
-        
+        return redirect(route('sheet'))->with(['success' => $message]);
         
     }
 
@@ -147,13 +151,18 @@ class BillController extends Controller
 
     }
 
-    public function update (Bill $bill, Request $request)
+    public function update (Bill $bill, FormBillRequest $request)
     {
+        // Calculo de valores para IVA, precio y total
+        $tax = $request->tax;
+        $vCal = ($request->price * $request->quantity);
+        $price =  ($vCal * $tax );
+        $total = ($vCal + $price);
 
         // Actualizar User
         $bill->update([
 
-            'name' => $request->username,
+            'name' => $request->name,
             'lastname' => $request->lastname,
             'password' => $request->password,
             'document' => $request->document,
@@ -165,13 +174,13 @@ class BillController extends Controller
             'article' => $request->article,
             'quantity' => $request->quantity,
             'price' => $request->price,
-            'tax' => $request->tax,
-            'total' => $request->total,
+            'tax' => $tax,
+            'total' => $total,
             
         ]);
 
-        return redirect()->route('bills.index')
-                ->with('warning', 'Factura(s) <strong>'.$bill->name.'</strong> Actualizada exitosamente!');
+        return redirect()->route('bill.index')
+                ->with('warning', 'Factura(s) <strong>'.$bill->city.'</strong> Actualizada exitosamente!');
 
     }
 
