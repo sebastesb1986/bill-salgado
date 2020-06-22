@@ -33,12 +33,12 @@ class BillsImport implements ToModel, WithBatchInserts, WithChunkReading, Should
     // Numero de datos por archivo a importar
     public function batchSize(): int
     {
-        return 16000;
+        return 1000;
     }
 
     // Cantidad de datos por archivo en cola
     public function chunkSize(): int
     {
-        return 1000;
+        return 55000;
     }
 }
